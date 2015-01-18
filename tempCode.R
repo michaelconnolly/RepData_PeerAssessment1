@@ -75,14 +75,38 @@ Foo <- function(inputDate){
 WeekendOrWeekday <- function(inputDate){
   dayOfWeek <- weekdays(inputDate)
   if ((dayOfWeek == "Saturday") || (dayOfWeek == "Sunday")){
-    return("weekend")
+    return(0)
   }
   else {
-    return("weekday")
+    return(1)
   }
 }
 
-dataFileFixedNa$weekday2 <- lapply(as.Date(dataFileFixedNa$date), WeekendOrWeekday)
+dataFileFixedNa$weekday <- lapply(as.Date(dataFileFixedNa$date), WeekendOrWeekday)
+
+
+# create new dataset with the mean thrown in there.
+dataFileFixedNa <- dataFile
+dataFileFixedNa$steps[is.na(dataFileFixedNa$steps)] <- stepsMean
+dataFileFixedNa$weekday <- lapply(as.Date(dataFileFixedNa$date), WeekendOrWeekday)
+
+weekdays <- dataFileFixedNa[dataFileFixedNa$weekday==0, c("interval", "steps")]
+weekends <- dataFileFixedNa[dataFileFixedNa$weekday==1, c("interval", "steps")]
+
+averageWeekdays <- sqldf("SELECT interval, AVG(steps) as StepsAverage FROM weekdays GROUP BY interval")
+averageWeekends <- sqldf("SELECT interval, AVG(steps) as StepsAverage FROM weekends GROUP BY interval")
+
+#dataFileFixedNaWeekday <- sqldf("SELECT steps, date, interval FROM dataFileFixedNa WHERE weekday=1")
+#averageWeekdayActivityPattern <- sqldf("SELECT interval, AVG(steps) AS StepsAverage FROM dataFileFixedNa GROUP BY interval")
+
+
+#f#oo <- sqldf("SELECT interval, AVG(steps) AS StepsAverage FROM dataFileFixedNa GROUP BY interval")
+
+
+
+par(mfrow=c(2,1))
+plot(averageWeekdays$StepsAverage~averageWeekdays$interval, type="l", main="weekdays")
+plot(averageWeekends$StepsAverage~averageWeekends$interval, type="l", main="weekends")
 
 bar <- weekdays(as.Date("2015-01-18"))
 
