@@ -8,39 +8,11 @@ library(sqldf)
 ```
 
 ```
-## Warning: package 'sqldf' was built under R version 3.1.2
-```
-
-```
 ## Loading required package: gsubfn
-```
-
-```
-## Warning: package 'gsubfn' was built under R version 3.1.2
-```
-
-```
 ## Loading required package: proto
-```
-
-```
-## Warning: package 'proto' was built under R version 3.1.2
-```
-
-```
 ## Loading required package: RSQLite
-```
-
-```
-## Warning: package 'RSQLite' was built under R version 3.1.2
-```
-
-```
 ## Loading required package: DBI
-```
-
-```
-## Warning: package 'DBI' was built under R version 3.1.2
+## Loading required package: RSQLite.extfuns
 ```
 
 ```r
@@ -63,7 +35,7 @@ stepsCountPerDay <- sqldf("SELECT date, SUM(steps) AS StepsSum FROM dataFileRemo
 hist(stepsCountPerDay$StepsSum)
 ```
 
-![plot of chunk unnamed-chunk-2](./PA1_template_files/figure-html/unnamed-chunk-2.png) 
+![](./PA1_template_files/figure-html/unnamed-chunk-2-1.png) 
 
 ```r
 stepsMean <- format(mean(stepsCountPerDay$StepsSum), nsmall=2)
@@ -79,7 +51,7 @@ averageDailyActivityPattern <- sqldf("SELECT interval, AVG(steps) AS StepsAverag
 plot(averageDailyActivityPattern$StepsAverage~averageDailyActivityPattern$interval, type="l")
 ```
 
-![plot of chunk unnamed-chunk-3](./PA1_template_files/figure-html/unnamed-chunk-3.png) 
+![](./PA1_template_files/figure-html/unnamed-chunk-3-1.png) 
 
 ```r
 highestValueRow <- sqldf("SELECT interval, MAX(StepsAverage) FROM averageDailyActivityPattern")
@@ -98,7 +70,7 @@ dataFileFixedNa$steps[is.na(dataFileFixedNa$steps)] <- averageStepsPerInterval
 ```
 The total amount of rows with missing content is 2304.
 
-For our secondary analysis, I will plug in the average amount of steps take in a given interval, which is 37.3826.
+For our secondary analysis, I will plug in the average amount of steps take in a given interval, which is 37.3825996.
 
 
 ```r
@@ -106,7 +78,7 @@ stepsCountPerDay2 <- sqldf("SELECT date, SUM(steps) AS StepsSum FROM dataFileFix
 hist(stepsCountPerDay2$StepsSum)
 ```
 
-![plot of chunk unnamed-chunk-5](./PA1_template_files/figure-html/unnamed-chunk-5.png) 
+![](./PA1_template_files/figure-html/unnamed-chunk-5-1.png) 
 
 ```r
 stepsMean2 <- format(mean(stepsCountPerDay2$StepsSum), nsmall=2)
@@ -141,5 +113,5 @@ plot(averageWeekdays$StepsAverage~averageWeekdays$interval, type="l", main="week
 plot(averageWeekends$StepsAverage~averageWeekends$interval, type="l", main="weekends")
 ```
 
-![plot of chunk unnamed-chunk-6](./PA1_template_files/figure-html/unnamed-chunk-6.png) 
+![](./PA1_template_files/figure-html/unnamed-chunk-6-1.png) 
 
